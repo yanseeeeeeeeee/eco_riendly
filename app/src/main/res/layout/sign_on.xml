@@ -23,11 +23,10 @@
         android:layout_marginTop="18dp"
         android:fontFamily="@font/manrope_font_family"
         android:textFontWeight="700"
-        android:text="Вход"
+        android:text="Создание профиля"
         android:layout_marginStart="40dp"
         android:textColor="@color/main_green"
-        android:textSize="32sp"
-        android:textStyle="bold"
+        android:textSize="25sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageButton" />
 
@@ -52,6 +51,16 @@
             android:textColorHint="@color/hint_text"
             android:textSize="16sp" />
 
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_font_family"
+            android:textFontWeight="500"
+            android:hint="Ваше имя"
+            android:layout_marginTop="20dp"
+            android:textColorHint="@color/hint_text"
+            android:textSize="16sp" />
+
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -64,6 +73,22 @@
                 android:fontFamily="@font/manrope_font_family"
                 android:textFontWeight="500"
                 android:hint="Пароль"
+                android:textColorHint="@color/hint_text"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/manrope_font_family"
+                android:textFontWeight="500"
+                android:hint="Подтверждение пароля"
                 android:textColorHint="@color/hint_text"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -81,7 +106,7 @@
         android:fontFamily="@font/manrope_font_family"
         android:textFontWeight="500"
         android:padding="12dp"
-        android:text="Войти"
+        android:text="Зарегистрироваться"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="22sp"
@@ -89,29 +114,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/manrope_font_family"
-        android:textFontWeight="400"
-        android:text="Забыли свой пароль?"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        android:src="@drawable/google"
-        android:layout_marginBottom="120dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -129,12 +131,12 @@
             android:textSize="14sp"
             android:fontFamily="@font/manrope_font_family"
             android:textFontWeight="400"
-            android:text="У вас ещё нет аккаунта?" />
+            android:text="У вас уже есть аккаунт?" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" Регистрация"
+            android:text=" Войти"
             android:textSize="14sp"
             android:fontFamily="@font/manrope_font_family"
             android:textFontWeight="400"

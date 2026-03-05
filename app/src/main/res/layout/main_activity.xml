@@ -35,7 +35,8 @@
                 android:textSize="22sp"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:fontFamily="@font/manrope"
+                android:fontFamily="@font/manrope_font_family"
+                android:textFontWeight="500"
                 android:textStyle="normal"
                 android:background="@drawable/green_button" />
 
@@ -46,7 +47,8 @@
                 android:textSize="22sp"
                 android:textAllCaps="false"
                 android:textColor="@color/main_green"
-                android:fontFamily="@font/manrope"
+                android:fontFamily="@font/manrope_font_family"
+                android:textFontWeight="500"
                 android:textStyle="normal"
                 android:layout_height="wrap_content"
                 android:background="@drawable/white_button" />
