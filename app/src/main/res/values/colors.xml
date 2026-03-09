@@ -18,4 +18,6 @@
     <color name="text_green">#2AA866</color>
     <color name="hint_text">#848484</color>
     <color name="bacground_darkgreen">#00664F</color>
+    <color name="empty">#E7ECE9</color>
+
 </resources>
