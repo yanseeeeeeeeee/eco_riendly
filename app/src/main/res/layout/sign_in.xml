@@ -43,19 +43,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/manrope_font_family"
-            android:textFontWeight="500"
-            android:hint="Эл. почта"
-            android:textColorHint="@color/hint_text"
-            android:textSize="16sp" />
+            android:layout_marginTop="20dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="@android:color/transparent"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/manrope_font_family"
+                android:textFontWeight="500"
+                android:hint="Эл. почта"
+                android:paddingVertical="10dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:paddingTop="0dp"
+                android:textColorHint="@color/hint_text"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="filled"
+            app:boxBackgroundColor="@android:color/transparent"
             app:endIconMode="password_toggle">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -64,13 +81,17 @@
                 android:fontFamily="@font/manrope_font_family"
                 android:textFontWeight="500"
                 android:hint="Пароль"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
                 android:textColorHint="@color/hint_text"
                 android:textSize="16sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

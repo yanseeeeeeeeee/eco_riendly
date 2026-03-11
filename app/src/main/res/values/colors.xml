@@ -19,5 +19,8 @@
     <color name="hint_text">#848484</color>
     <color name="bacground_darkgreen">#00664F</color>
     <color name="empty">#E7ECE9</color>
+    <color name="Input_BG">#F5F5F9</color>
+    <color name="Description">#7E7E9A</color>
+    <color name="Input_stroke">#EBEBEB</color>
 
 </resources>

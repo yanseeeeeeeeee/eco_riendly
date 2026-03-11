@@ -129,6 +129,7 @@
         android:backgroundTint="@color/white"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView">
@@ -167,17 +168,115 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/manrope_font_family"
+                    android:textFontWeight="700"
+                    android:textColor="@color/text"
+                    android:textSize="13sp"
+                    android:layout_marginTop="20dp"
                     android:text="Имя"/>
 
-
-
-
-
-              
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Поле для ввода"
+                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="18dp"
+                    android:textSize="16sp"
+                    android:layout_marginTop="7dp"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/manrope_font_family"
+                    android:textFontWeight="500"
+                    android:background="@drawable/edit_text"/>
 
             </LinearLayout>
 
         </RelativeLayout>
 
     </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+
+        android:id="@+id/cardView4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@color/card_green"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView3">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/manrope_font_family"
+                    android:text="Подсказка"
+                    android:textColor="@color/black"
+                    android:textFontWeight="500"
+                    android:textSize="20sp" />
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="@font/manrope_font_family"
+                    android:text="Если выберешь светлую фотографию - профиль будет смотреться лучше :)"
+                    android:textColor="@color/text"
+                    android:textFontWeight="400"
+                    android:textSize="13sp" />
+
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/green_rect_button"
+        android:layout_marginStart="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginTop="25dp"
+        android:text="Сохранить"
+        android:textAllCaps="false"
+        android:fontFamily="@font/manrope_font_family"
+        android:textFontWeight="400"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:paddingVertical="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardView4" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Изменения можно обновить позже"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/manrope_font_family"
+        android:textFontWeight="400"
+        android:textColor="@color/text"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

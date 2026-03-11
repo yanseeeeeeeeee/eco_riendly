@@ -28,7 +28,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Войти"
@@ -40,7 +40,7 @@
                 android:textStyle="normal"
                 android:background="@drawable/green_button" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:layout_marginTop="12dp"
                 android:layout_width="match_parent"
                 android:text="Регистрация"
