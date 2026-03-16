@@ -3,14 +3,29 @@ package com.example.ecofriendly.view;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.ecofriendly.R;
+import com.example.ecofriendly.adapters.TaskCardAdapters;
+import com.example.ecofriendly.data.Repository;
+import com.example.ecofriendly.data.models.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Home extends Fragment {
+
+    RecyclerView recyclerView;
+    FirebaseFirestore db;
+    Repository repository;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -43,7 +58,36 @@ public class Home extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_home, container,false);
+        recyclerView = view.findViewById(R.id.card_recycler);
+        db = FirebaseFirestore.getInstance();
+        repository = new Repository();
+
+        List<Task> listTask = new ArrayList<>();
+        TaskCardAdapters adapter = new TaskCardAdapters(listTask, requireContext(), task -> {
+
+            //bottomsheet
+
+            Toast.makeText(requireContext(), "CardView", Toast.LENGTH_SHORT).show();
+        });
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+
+
+        repository.getTask(new Repository.taskGetInfoListener() {
+            @Override
+            public void onLoaded(List<Task> task) {
+                adapter.updateList(task);
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e("Home", "Error"+ error);
+            }
+        });
 
         return view;
     }
+
 }

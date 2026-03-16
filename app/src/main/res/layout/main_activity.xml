@@ -29,6 +29,7 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/signIn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Войти"
@@ -41,6 +42,7 @@
                 android:background="@drawable/green_button" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/signOn"
                 android:layout_marginTop="12dp"
                 android:layout_width="match_parent"
                 android:text="Регистрация"
