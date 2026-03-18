@@ -21,6 +21,7 @@ public class TaskCardAdapters extends RecyclerView.Adapter<TaskCardAdapters.View
     private List<Task> taskList;
     private Context context;
     private onTaskClickListener listener;
+    String uid;
 
     public interface onTaskClickListener{
         void onTaskClick(Task task);
@@ -46,12 +47,22 @@ public class TaskCardAdapters extends RecyclerView.Adapter<TaskCardAdapters.View
         holder.points.setText(String.valueOf(task.getPoints()));
         holder.shortDescription.setText(task.getShortDescription());
 
+        holder.itemView.setOnClickListener(v -> {
+            uid = task.getTaskId();
+            listener.onTaskClick(task);
+        });
+    }
+
+    //получаем id задачи по позиции
+    public String getUidTaskWithPos() {
+        return uid;
     }
 
     @Override
     public int getItemCount() {
         return taskList.size();
     }
+
 
     public void updateList(List<Task> newList) {
         taskList.clear();

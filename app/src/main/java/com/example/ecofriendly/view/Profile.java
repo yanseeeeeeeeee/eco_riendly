@@ -85,12 +85,12 @@ public class Profile extends Fragment {
 
         repository.getUser(uid, new Repository.userGetInfoListenner() {
             @Override
-            public void onLoaded(String userName, String userEmail, String userPoints, String completedTaskStr, String streakStr) {
-                name.setText(userName);
-                email.setText(userEmail);
-                points.setText(userPoints);
-                completedTask.setText(completedTaskStr);
-                streak.setText(streakStr);
+            public void onLoaded(User user) {
+                name.setText(user.getName());
+                email.setText(user.getEmail());
+                points.setText(String.valueOf(user.getPoints()));
+                completedTask.setText(String.valueOf(user.getCompletedTask()));
+                streak.setText(String.valueOf(user.getStreak()));
             }
 
             @Override

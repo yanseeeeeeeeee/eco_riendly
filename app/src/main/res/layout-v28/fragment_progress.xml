@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".view.Progress">
@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="50dp"
             android:fontFamily="@font/manrope_font_family"
             android:text="Прогресс"
             android:textColor="@color/black"
@@ -76,6 +76,7 @@
                             android:textSize="30sp" />
 
                         <TextView
+                            android:id="@+id/level"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
@@ -93,6 +94,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/earnedPoints"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/manrope_font_family"
@@ -112,6 +114,7 @@
                             android:textSize="15sp" />
 
                         <TextView
+                            android:id="@+id/totalPoints"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
@@ -158,6 +161,7 @@
                             android:textSize="14sp" />
 
                         <TextView
+                            android:id="@+id/remainingPoints"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
@@ -226,6 +230,7 @@
                             android:textSize="19sp" />
 
                         <TextView
+                            android:id="@+id/streak"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
@@ -264,6 +269,7 @@
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/descrStreak"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
@@ -475,6 +481,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/completed_task"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/manrope_font_family"
@@ -521,6 +528,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/streakCard"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/manrope_font_family"
@@ -568,6 +576,7 @@
                         android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/bages"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/manrope_font_family"
@@ -618,6 +627,8 @@
             android:layout_marginEnd="25dp"
             android:orientation="horizontal"
             android:weightSum="2"
+            android:layout_marginBottom="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -649,7 +660,7 @@
                         <ImageView
                             android:layout_width="44dp"
                             android:layout_height="44dp"
-                            android:src="@drawable/green_oval"/>
+                            android:src="@drawable/green_oval" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -659,9 +670,9 @@
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="10dp"
                                 android:fontFamily="@font/manrope_font_family"
                                 android:text="Первое задание"
-                                android:layout_marginStart="10dp"
                                 android:textColor="@color/black"
                                 android:textFontWeight="500"
                                 android:textSize="15sp" />
@@ -670,11 +681,11 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:textColor="@color/text"
-                                android:textSize="12sp"
                                 android:fontFamily="@font/manrope_font_family"
+                                android:text="Получен"
+                                android:textColor="@color/text"
                                 android:textFontWeight="400"
-                                android:text="Получен"/>
+                                android:textSize="12sp" />
 
                         </LinearLayout>
 
@@ -710,7 +721,7 @@
                         <ImageView
                             android:layout_width="44dp"
                             android:layout_height="44dp"
-                            android:src="@drawable/green_oval"/>
+                            android:src="@drawable/green_oval" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -731,14 +742,13 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
-                                android:textColor="@color/text"
-                                android:textSize="12sp"
                                 android:fontFamily="@font/manrope_font_family"
+                                android:text="Получен"
+                                android:textColor="@color/text"
                                 android:textFontWeight="400"
-                                android:text="Получен"/>
+                                android:textSize="12sp" />
 
                         </LinearLayout>
-
 
 
                     </LinearLayout>

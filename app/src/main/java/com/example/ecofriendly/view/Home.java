@@ -10,12 +10,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ecofriendly.R;
 import com.example.ecofriendly.adapters.TaskCardAdapters;
 import com.example.ecofriendly.data.Repository;
 import com.example.ecofriendly.data.models.Task;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -23,9 +27,14 @@ import java.util.List;
 
 public class Home extends Fragment {
 
-    RecyclerView recyclerView;
-    FirebaseFirestore db;
-    Repository repository;
+    private TextView title, description;
+    private Button save;
+    private ImageButton close;
+    private TaskCardAdapters adapter;
+
+    private RecyclerView recyclerView;
+    private FirebaseFirestore db;
+    private Repository repository;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -63,19 +72,20 @@ public class Home extends Fragment {
         repository = new Repository();
 
         List<Task> listTask = new ArrayList<>();
-        TaskCardAdapters adapter = new TaskCardAdapters(listTask, requireContext(), task -> {
+        adapter = new TaskCardAdapters(listTask, requireContext(), new TaskCardAdapters.onTaskClickListener() {
+            @Override
+            public void onTaskClick(Task task) {
+                openBottomSheet(task);
+            }
+        }
 
-            //bottomsheet
-
-            Toast.makeText(requireContext(), "CardView", Toast.LENGTH_SHORT).show();
-        });
+        );
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL,false);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
-
-        repository.getTask(new Repository.taskGetInfoListener() {
+        repository.getListTask(new Repository.taskListGetInfoListener() {
             @Override
             public void onLoaded(List<Task> task) {
                 adapter.updateList(task);
@@ -90,4 +100,32 @@ public class Home extends Fragment {
         return view;
     }
 
+    private void openBottomSheet(Task task) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(requireContext());
+        View view = LayoutInflater.from(requireContext()).inflate(R.layout.bottom_sheet, null);
+
+        bottomSheetDialog.setContentView(view);
+
+
+
+        title = view.findViewById(R.id.title);
+        description = view.findViewById(R.id.shortDescription);
+
+        save = view.findViewById(R.id.button);
+        close = view.findViewById(R.id.close);
+
+
+        title.setText(task.getTitle());
+        description.setText(task.getDescription());
+
+
+        close.setOnClickListener(v -> bottomSheetDialog.dismiss());
+        save.setOnClickListener(v -> Toast.makeText(requireContext(),
+                "Подтверждение отправлено",
+                Toast.LENGTH_LONG).show());
+
+        bottomSheetDialog.show();
+    }
+
 }
+

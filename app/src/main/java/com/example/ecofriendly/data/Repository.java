@@ -2,7 +2,6 @@ package com.example.ecofriendly.data;
 
 import com.example.ecofriendly.data.models.Task;
 import com.example.ecofriendly.data.models.User;
-import com.google.firebase.Firebase;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -77,8 +76,7 @@ public class Repository {
                    if (documentSnapshot.exists()) {
                        User user = documentSnapshot.toObject(User.class);
                        if (user != null) {
-                           listenner.onLoaded(user.getName(),user.getEmail(),String.valueOf(user.getPoints()),
-                                   String.valueOf(user.getCompletedTask()), String.valueOf(user.getStreak()));
+                           listenner.onLoaded(user);
                        } else {
                            listenner.onError("Пользователь не найден");
                        }
@@ -93,7 +91,7 @@ public class Repository {
      * получение листика с задачами
      * @param listener
      */
-   public void getTask( taskGetInfoListener listener ) {
+   public void getListTask( taskListGetInfoListener listener ) {
        db.collection("task")
                .whereEqualTo("active", true)
                .get()
@@ -116,6 +114,34 @@ public class Repository {
                });
    }
 
+    /**
+     * Метод для получения задачи по id
+     *
+     * @param uid
+     */
+   public void getTaskWithUid(String uid, taskInfoListener listener){
+       db.collection("task")
+               .document(uid)
+               .get()
+               .addOnSuccessListener(documentSnapshot -> {
+
+                   if (documentSnapshot.exists()) {
+                       Task task = documentSnapshot.toObject(Task.class);
+
+                       if (task != null) {
+                           listener.onLoaded(task);
+                       }
+
+                   } else {
+                       listener.onError("Задача не найдена");
+                   }
+
+               })
+               .addOnFailureListener(e -> {
+                   listener.onError("Error" + e.getMessage());
+               });
+   }
+
 
    public interface userNameLoadedListenner{
        void onLoaded(String userString);
@@ -123,13 +149,20 @@ public class Repository {
    }
 
    public interface userGetInfoListenner{
-       void onLoaded(String userName, String userEmail, String userPoints, String completedTask, String streak );
+       void onLoaded(User user);
        void onError(String error);
    }
 
-   public interface taskGetInfoListener{
+   public interface taskListGetInfoListener{
        void onLoaded(List<Task> task);
        void onError(String error);
    }
+
+   public interface taskInfoListener{
+       void onLoaded(Task task);
+       void onError(String error);
+   }
+
+
 
 }

@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bottom_menu"
         app:itemIconSize="30dp"
-        android:background="#F2F2F7"
+        android:background="@color/white"
         app:itemIconTint="@color/icon_color"
         app:layout_constraintBottom_toBottomOf="parent" />
 

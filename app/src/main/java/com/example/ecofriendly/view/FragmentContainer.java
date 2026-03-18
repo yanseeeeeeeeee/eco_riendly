@@ -47,7 +47,7 @@ public class FragmentContainer extends AppCompatActivity {
     }
 
     /**
-     * Метод для подгрузки контейнеров
+     * Метод для подгрузки экранов
      * @param fragment
      */
     private void LoadFragment(Fragment fragment) {
