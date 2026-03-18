@@ -9,7 +9,7 @@ public class User {
     private int streak;
     private int points;
     private int level;
-    private int completedTask;
+    private int completedTasks;
     private boolean isActive;
     private Object createdAd;
     private String lastActivityDay;
@@ -24,7 +24,7 @@ public class User {
         this.streak = 0;
         this.points = 0;
         this.level = 0;
-        this.completedTask = 0;
+        this.completedTasks = 0;
         this.isActive = true;
         this.createdAd = com.google.firebase.firestore.FieldValue.serverTimestamp();
         this.lastActivityDay=null;
@@ -58,8 +58,8 @@ public class User {
         return level;
     }
 
-    public int getCompletedTask() {
-        return completedTask;
+    public int getCompletedTasks() {
+        return completedTasks;
     }
 
     public boolean isActive() {
@@ -103,7 +103,7 @@ public class User {
     }
 
     public void setCompletedTask(int completedTask) {
-        this.completedTask = completedTask;
+        this.completedTasks = completedTask;
     }
 
     public void setActive(boolean active) {

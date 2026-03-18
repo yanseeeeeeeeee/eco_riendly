@@ -89,7 +89,7 @@ public class Profile extends Fragment {
                 name.setText(user.getName());
                 email.setText(user.getEmail());
                 points.setText(String.valueOf(user.getPoints()));
-                completedTask.setText(String.valueOf(user.getCompletedTask()));
+                completedTask.setText(String.valueOf(user.getCompletedTasks()));
                 streak.setText(String.valueOf(user.getStreak()));
             }
 

@@ -4,12 +4,14 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.ecofriendly.R;
+import com.example.ecofriendly.data.GameRepository;
 import com.example.ecofriendly.data.Repository;
 import com.example.ecofriendly.data.models.User;
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,17 +20,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 
 public class Progress extends Fragment {
-
-    private int earnedPoints, totalPoints, remainingPoints, level, streak, bages, completedTask;
-
     private TextView TVlevel, TVtotalPoints, TVearnedPoints, TVremainingPoints, TVstreak, descrStreak,
             cardStreak, cardCompletedTask, cardBages;
 
    private FirebaseFirestore db;
    private Repository repository;
    private FirebaseAuth mAuth;
-
-
+   private GameRepository gameRepository;
 
 
     private static final String ARG_PARAM1 = "param1";
@@ -70,6 +68,10 @@ public class Progress extends Fragment {
         cardStreak = view.findViewById(R.id.streakCard);
         cardCompletedTask = view.findViewById(R.id.completed_task);
         cardBages = view.findViewById(R.id.bages);
+        mAuth = FirebaseAuth.getInstance();
+        repository = new Repository();
+        gameRepository = new GameRepository();
+
         FirebaseUser user = mAuth.getCurrentUser();
         String uid = "";
 
@@ -87,19 +89,20 @@ public class Progress extends Fragment {
             @Override
             public void onLoaded(User user) {
                 TVlevel.setText(String.valueOf(user.getLevel()));
-                TVtotalPoints.setText(String.valueOf(totalPoints));
+                TVtotalPoints.setText(String.valueOf(100));
                 TVearnedPoints.setText(String.valueOf(user.getPoints()));
-                TVremainingPoints.setText(String.valueOf(remainingPoints));
+                TVremainingPoints.setText(String.valueOf(gameRepository
+                        .getPointsForNextLevel(user.getPoints())));
                 TVstreak.setText(String.valueOf(user.getStreak()));
                 descrStreak.setText(String.valueOf(user.getStreak()));
                 cardStreak.setText(String.valueOf(user.getStreak()));
-                cardCompletedTask.setText(String.valueOf(user.getCompletedTask()));
-                cardBages.setText(String.valueOf(bages));
+                cardCompletedTask.setText(String.valueOf(user.getCompletedTasks()));
+                cardBages.setText(String.valueOf(0));
             }
 
             @Override
             public void onError(String error) {
-
+                Log.e("Progress", "Error:" + error);
             }
         });
 
