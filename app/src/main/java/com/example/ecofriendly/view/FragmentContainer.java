@@ -1,10 +1,13 @@
 package com.example.ecofriendly.view;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.view.View;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.ecofriendly.R;
@@ -14,13 +17,27 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
  * Класс для работы нижнего навигационного меню, загрузка фрагментов
  */
 
-public class FragmentContainer extends AppCompatActivity {
+public class FragmentContainer extends BaseActivity {
     BottomNavigationView bottomMenu;
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_container;
+    }
+
+    @Override
+    protected int getRootViewId() {
+        return R.id.root;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_container);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
         bottomMenu = findViewById(R.id.bottomNavigationView);
 

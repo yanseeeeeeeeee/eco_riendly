@@ -1,0 +1,62 @@
+[
+  {
+    "badgeId": "first_step",
+    "title": "Первый шаг",
+    "description": "Выполни первое задание",
+    "imageName": "badge_first_step"
+  },
+  {
+    "badgeId": "tasks_5",
+    "title": "Эко-новичок",
+    "description": "Выполни 5 заданий",
+    "imageName": "badge_tasks_5"
+  },
+  {
+    "badgeId": "tasks_10",
+    "title": "Уверенный старт",
+    "description": "Выполни 10 заданий",
+    "imageName": "badge_tasks_10"
+  },
+  {
+    "badgeId": "streak_3",
+    "title": "3 дня подряд",
+    "description": "Выполняй задания 3 дня подряд",
+    "imageName": "badge_streak_3"
+  },
+  {
+    "badgeId": "streak_7",
+    "title": "7 дней подряд",
+    "description": "Выполняй задания 7 дней подряд",
+    "imageName": "badge_streak_7"
+  },
+  {
+    "badgeId": "reuse_3",
+    "title": "Друг многоразового",
+    "description": "Выполни 3 задания из категории многоразового использования",
+    "imageName": "badge_reuse_3"
+  },
+  {
+    "badgeId": "waste_3",
+    "title": "Сортировщик",
+    "description": "Выполни 3 задания из категории сортировки отходов",
+    "imageName": "badge_waste_3"
+  },
+  {
+    "badgeId": "energy_3",
+    "title": "Энергосберегающий герой",
+    "description": "Выполни 3 задания из категории экономии энергии",
+    "imageName": "badge_energy_3"
+  },
+  {
+    "badgeId": "water_3",
+    "title": "Хранитель воды",
+    "description": "Выполни 3 задания из категории экономии воды",
+    "imageName": "badge_water_3"
+  },
+  {
+    "badgeId": "nature_3",
+    "title": "Защитник природы",
+    "description": "Выполни 3 задания из категории заботы о природе",
+    "imageName": "badge_nature_3"
+  }
+]

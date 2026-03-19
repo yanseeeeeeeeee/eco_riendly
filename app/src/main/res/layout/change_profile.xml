@@ -4,11 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F6FBF8"
+    android:fillViewport="true"
+    android:id="@+id/root"
+    android:clipToPadding="false"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <View
             android:layout_width="180dp"
@@ -182,6 +185,7 @@
                         android:text="Имя"/>
 
                     <EditText
+                        android:id="@+id/inputName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Поле для ввода"
@@ -254,6 +258,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/save"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"

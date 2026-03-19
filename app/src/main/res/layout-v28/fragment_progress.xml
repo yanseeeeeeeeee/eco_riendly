@@ -5,11 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:clipToPadding="false"
+    android:id="@+id/root"
     android:background="@color/background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".view.Progress">
 
         <TextView
@@ -81,7 +84,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
                             android:fontFamily="@font/manrope_font_family"
-                            android:text="1"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textFontWeight="700"
                             android:textSize="30sp" />
@@ -98,7 +101,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/manrope_font_family"
-                            android:text="400"
+                            android:text=""
                             android:textColor="@color/text"
                             android:textFontWeight="400"
                             android:textSize="15sp" />
@@ -119,7 +122,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
                             android:fontFamily="@font/manrope_font_family"
-                            android:text="500"
+                            android:text="100"
                             android:textColor="@color/text"
                             android:textFontWeight="400"
                             android:textSize="15sp" />
@@ -137,6 +140,7 @@
                     </LinearLayout>
 
                     <ProgressBar
+                        android:id="@+id/progress_bar"
                         style="?android:attr/progressBarStyleHorizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -166,7 +170,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
                             android:fontFamily="@font/manrope_font_family"
-                            android:text="80"
+                            android:text=""
                             android:textColor="@color/text"
                             android:textFontWeight="400"
                             android:textSize="14sp" />
@@ -235,7 +239,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
                             android:fontFamily="@font/manrope_font_family"
-                            android:text="5"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textFontWeight="600"
                             android:textSize="19sp" />
@@ -260,6 +264,7 @@
                         android:orientation="horizontal">
 
                         <TextView
+                            android:id="@+id/callStreak"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/manrope_font_family"
@@ -274,12 +279,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
                             android:fontFamily="@font/manrope_font_family"
-                            android:text="5"
+                            android:text=""
                             android:textColor="@color/text"
                             android:textFontWeight="400"
                             android:textSize="13sp" />
 
                         <TextView
+                            android:id="@+id/OuStreak"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="2dp"
@@ -485,7 +491,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/manrope_font_family"
-                            android:text="12"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textFontWeight="700"
                             android:textSize="26sp" />
@@ -532,7 +538,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/manrope_font_family"
-                            android:text="5"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textFontWeight="700"
                             android:textSize="26sp" />
@@ -580,7 +586,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/manrope_font_family"
-                            android:text="3"
+                            android:text=""
                             android:textColor="@color/black"
                             android:textFontWeight="700"
                             android:textSize="26sp" />
@@ -603,45 +609,67 @@
 
         </LinearLayout>
 
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="25dp"
             android:layout_marginTop="10dp"
-            android:fontFamily="@font/manrope_font_family"
-            android:text="Значки"
-            android:textColor="@color/black"
-            android:textFontWeight="700"
-            android:textSize="22sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+            android:layout_marginStart="25dp"
+            android:layout_marginEnd="25dp"
+            android:weightSum="1"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2">
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/manrope_font_family"
+                android:text="Значки"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textFontWeight="700"
+                android:textSize="22sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+            <TextView
+                android:id="@+id/all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/manrope_font_family"
+                android:text="Все >"
+                android:clickable="true"
+                android:textColor="@color/main_green"
+                android:textFontWeight="500"
+                android:textSize="18sp"/>
+        </LinearLayout>
 
 
         <LinearLayout
+            android:id="@+id/cardContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="25dp"
-            android:layout_marginTop="10dp"
             android:layout_marginEnd="25dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal"
             android:weightSum="2"
-            android:layout_marginBottom="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3">
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4">
 
             <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
+                android:id="@+id/lastCard"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
+                android:layout_marginTop="10dp"
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2">
@@ -658,6 +686,7 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/imageLast"
                             android:layout_width="44dp"
                             android:layout_height="44dp"
                             android:src="@drawable/green_oval" />
@@ -668,6 +697,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/titleLast"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
@@ -696,13 +726,14 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:layout_width="0dp"
+                android:id="@+id/lastSecondCard"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
                 android:layout_weight="1"
                 android:backgroundTint="@color/white"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2">
@@ -719,6 +750,7 @@
                         android:orientation="horizontal">
 
                         <ImageView
+                            android:id="@+id/imageSecondLast"
                             android:layout_width="44dp"
                             android:layout_height="44dp"
                             android:src="@drawable/green_oval" />
@@ -729,6 +761,7 @@
                             android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/titleSecondLast"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="10dp"
@@ -759,6 +792,23 @@
 
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/nullBadges"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginBottom="20dp"
+            android:fontFamily="@font/manrope_font_family"
+            android:textFontWeight="400"
+            android:textColor="@color/text"
+            android:text="У вас пока нет полученных значков"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+            tools:layout_editor_absoluteX="25dp"
+            android:visibility="gone"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

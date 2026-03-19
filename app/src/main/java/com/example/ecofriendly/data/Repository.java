@@ -1,11 +1,15 @@
 package com.example.ecofriendly.data;
 
+import com.example.ecofriendly.data.models.Badge;
 import com.example.ecofriendly.data.models.Task;
 import com.example.ecofriendly.data.models.User;
 import com.example.ecofriendly.data.models.UserTask;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
@@ -13,7 +17,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 
 public class Repository {
@@ -22,54 +25,6 @@ public class Repository {
 
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
     GameRepository gameRepository = new GameRepository();
-
-    /**
-     * Метод для получения имени пользователя
-     * @param uid
-     * @param listenner
-     */
-   public void getUserName(String uid, userNameLoadedListenner listenner) {
-       db.collection("users")
-               .document(uid)
-               .get()
-               .addOnSuccessListener(documentSnapshot -> {
-
-                   if (documentSnapshot.exists()) {
-                       String userName = documentSnapshot.getString("name");
-                       listenner.onLoaded(userName);
-                   } else {
-                       listenner.onError("Пользователь не найден");
-                   }
-
-               })
-               .addOnFailureListener( e -> {
-                   listenner.onError(e.getMessage());
-               });
-
-   }
-
-    /**
-     * Метод для получения email пользователя
-     * @param uid
-     * @param listenner
-     */
-   public void getUserEmail(String uid, userNameLoadedListenner listenner) {
-       db.collection("users")
-               .document(uid)
-               .get()
-               .addOnSuccessListener(documentSnapshot -> {
-
-                   if (documentSnapshot.exists()) {
-                       String userEmail = documentSnapshot.getString("email");
-                       listenner.onLoaded(userEmail);
-                   } else {
-                       listenner.onError("Пользователь не найден");
-                   }
-               })
-               .addOnFailureListener(e -> {
-                   listenner.onError(e.getMessage());
-               });
-   }
 
     /**
      * Метод для получения полной модели пользователя
@@ -97,7 +52,7 @@ public class Repository {
    }
 
     /**
-     * получение листика с задачами
+     * получение листика с активными задачами
      * @param listener
      */
    public void getListTask( taskListGetInfoListener listener ) {
@@ -151,6 +106,13 @@ public class Repository {
                });
    }
 
+    /**
+     * метод для сохранения выполненной задачи
+     * в этом методе так же содержится создание подколлекции user_tasks
+     * @param uid
+     * @param task
+     * @param listener
+     */
    public void completeTask (String uid, Task task, completeTaskListener listener){
 
        DocumentReference userReference = db.collection("users").document(uid);
@@ -201,8 +163,27 @@ public class Repository {
 
                batch.update(userReference, mapUser);
 
+                       //действие с бейджами
+                       List<String> newBadges = gameRepository.getBadgesForTaskCompletion(
+                               newCompletedTask,
+                               newStreak
+                       );
+
+                       for (String badgeId : newBadges) {
+                           DocumentReference badgeReference = db.collection("users")
+                                   .document(uid)
+                                   .collection("user_badges")
+                                   .document(badgeId);
+
+                           Map<String, Object> badgeMap = new HashMap<>();
+                           badgeMap.put("badgeId", badgeId);
+                           badgeMap.put("receivedAt", FieldValue.serverTimestamp());
+
+                           batch.set(badgeReference, badgeMap);
+                       }
+
                batch.commit().addOnSuccessListener(unused -> {
-                   //действие с бейджами
+
                    listener.onSuccess();
                })
                        .addOnFailureListener(e -> listener.onError(e.getMessage()));
@@ -215,6 +196,11 @@ public class Repository {
 
    }
 
+    /**
+     * метод для получения листа с задачами, доступными для пользователя к выполнению
+     * @param uid
+     * @param listener
+     */
     public void getAvailableTasks(String uid, taskListGetInfoListener listener) {
         db.collection("users")
                 .document(uid)
@@ -262,10 +248,214 @@ public class Repository {
     }
 
 
-   public interface userNameLoadedListenner{
-       void onLoaded(String userString);
-       void onError(String error);
-   }
+    /**
+     * метод для сохранения значка для пользователя
+     * @param uid
+     * @param bageUid
+     * @param listener
+     */
+    public void setBagesForUser(String uid, String bageUid, completeTaskListener listener ) {
+
+        Map<String, Object> bageMap = new HashMap<>();
+        bageMap.put("bageId", bageUid);
+        bageMap.put("receivedAt", FieldValue.serverTimestamp());
+
+        db.collection("users")
+                .document("uid")
+                .collection("user_badges")
+                .document(bageUid)
+                .set(bageMap)
+                .addOnSuccessListener(unused -> {
+                    listener.onSuccess();
+                })
+                .addOnFailureListener(e -> listener.onError(e.getMessage()));
+
+    }
+
+    /**
+     * Получаем лист с полученными пользователем бейджами
+     * @param uid
+     * @param listener
+     */
+    public void getListBagesUser(String uid, bagesUserListListener listener) {
+        db.collection("users")
+                .document(uid)
+                .collection("user_badges")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    List<com.google.android.gms.tasks.Task<DocumentSnapshot>> badgeTasks = new ArrayList<>();
+
+                    for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
+                        String badgeId = documentSnapshot.getId();
+
+                        com.google.android.gms.tasks.Task<DocumentSnapshot> badgeTask = db.collection("badges")
+                                .document(badgeId)
+                                .get();
+
+                        badgeTasks.add(badgeTask);
+                    }
+
+                    if (badgeTasks.isEmpty()) {
+                        listener.onLoaded(new ArrayList<>());
+                        return;
+                    }
+
+                    Tasks.whenAllSuccess(badgeTasks)
+                            .addOnSuccessListener(res -> {
+
+                                List<Badge> badgeList = new ArrayList<>();
+
+                                for (Object o : res) {
+                                    DocumentSnapshot badgeDoc = (DocumentSnapshot) o;
+                                    Badge badge = badgeDoc.toObject(Badge.class);
+
+                                    if (badge != null) {
+                                        badge.setBadgeId(badgeDoc.getId());
+                                        badgeList.add(badge);
+                                    }
+
+                                }
+
+                                listener.onLoaded(badgeList);
+
+                            })
+                            .addOnFailureListener(e -> e.getMessage());
+
+                })
+                .addOnFailureListener(e -> listener.onError(e.getMessage()));
+    }
+
+
+    /**
+     * Получаем значок по id
+     * @param badgeUid
+     * @param listener
+     */
+    public void getBadges(String badgeUid, badgesInfoListener listener ) {
+        db.collection("badges")
+                .document(badgeUid)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+
+                    if (documentSnapshot.exists()) {
+                        Badge badge = documentSnapshot.toObject(Badge.class);
+
+
+                        if (badge != null) {
+                            badge.setBadgeId(badgeUid);
+                            listener.onLoaded(badge);
+                        } else {
+                            listener.onError("Ошибка чтения значка");
+                        }
+                    } else {
+                        listener.onError("Значок не найден");
+                    }
+
+                })
+                .addOnFailureListener(e -> listener.onError(e.getMessage()));
+    }
+
+
+    /**
+     * получаем два последних значка для экрана прогресса
+     * @param uid
+     * @param listener
+     */
+    public void getTwoLastBages(String uid, bagesTwoLastListener listener ){
+        db.collection("users")
+                .document(uid)
+                .collection("user_badges")
+                .orderBy("receivedAt", Query.Direction.DESCENDING)
+                .limit(2)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+
+                    List<DocumentSnapshot> documentSnapshots = queryDocumentSnapshots.getDocuments();
+
+                    if (documentSnapshots.isEmpty()) {
+                        listener.onLoaded(null, null); //если мы получаем нулевые объекты то нам надо прописать в коде чтобы заменить ui
+                        return;
+                    }
+
+                    String lastBageId = documentSnapshots.get(0).getId();
+
+                    getBadges(lastBageId, new badgesInfoListener() {
+                        @Override
+                        public void onLoaded(Badge lastBadge) {
+                            if (documentSnapshots.size() == 1) {
+                                listener.onLoaded(lastBadge, null);
+                                return;
+                            }
+
+                            String secondLastBadgeId = documentSnapshots.get(1).getId();
+
+                            getBadges(secondLastBadgeId, new badgesInfoListener() {
+                                @Override
+                                public void onLoaded(Badge badge) {
+                                    listener.onLoaded(lastBadge, badge);
+                                }
+
+                                @Override
+                                public void onError(String error) {
+                                    listener.onError(error);
+                                }
+                            });
+
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            listener.onError("Error" + error);
+                        }
+                    });
+
+                })
+                .addOnFailureListener(e -> listener.onError(e.getMessage()));
+
+
+    }
+
+
+    /**
+     * метод поможет обновить имя пользователя
+     * @param uid
+     * @param newName
+     * @param listener
+     */
+    public void updateUserName(String uid, String newName, updateUserListener listener) {
+        if (newName == null || newName.trim().isEmpty()) {
+            listener.onError("Имя не может быть пустым");
+            return;
+        }
+
+        db.collection("users")
+                .document(uid)
+                .update("name", newName.trim())
+                .addOnSuccessListener(unused -> {
+                    listener.onSuccess();
+                })
+                .addOnFailureListener(e -> {
+                    listener.onError("Error: " + e.getMessage());
+                });
+    }
+
+    public interface updateUserListener {
+        void onSuccess();
+        void onError(String error);
+    }
+    public interface bagesTwoLastListener{
+        void onLoaded(Badge lastBadge, Badge secondLastBadge);
+        void onError(String error);
+    }
+    public interface badgesInfoListener{
+        void onLoaded(Badge badge);
+        void onError(String error);
+    }
+    public interface  bagesUserListListener{
+        void onLoaded(List<Badge> badgeList);
+        void onError(String error);
+    }
 
    public interface userGetInfoListenner{
        void onLoaded(User user);
@@ -286,6 +476,8 @@ public class Repository {
        void onSuccess();
        void onError(String error);
    }
+
+
 
 
 

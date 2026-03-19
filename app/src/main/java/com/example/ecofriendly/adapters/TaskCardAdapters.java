@@ -53,10 +53,6 @@ public class TaskCardAdapters extends RecyclerView.Adapter<TaskCardAdapters.View
         });
     }
 
-    //получаем id задачи по позиции
-    public String getUidTaskWithPos() {
-        return uid;
-    }
 
     @Override
     public int getItemCount() {

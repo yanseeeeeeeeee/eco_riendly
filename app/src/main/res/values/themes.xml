@@ -2,13 +2,13 @@
 <resources>
 
     <style name="Theme.EcoFriendly" parent="Theme.MaterialComponents.Light.NoActionBar" >
-        <item name="android:statusBarColor">@android:color/transparent</item>
+
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
     </style>
 
     <style name="Theme.EcoFriendly.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/white</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/label</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/label_for_splash</item>
         <item name="postSplashScreenTheme">@style/Theme.EcoFriendly</item>
     </style>
 
@@ -32,7 +32,26 @@
 
     <style name="RoundedMaterialDialog" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="shapeAppearanceOverlay">@style/RoundedMaterialDialogShape</item>
+        <item name="buttonBarPositiveButtonStyle">@style/DialogButtonPositive</item>
+        <item name="buttonBarNegativeButtonStyle">@style/DialogButtonNegative</item>
+        <item name="buttonBarNeutralButtonStyle">@style/DialogButtonNeutral</item>
     </style>
+
+    <style name="DialogButtonPositive" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/main_green</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="DialogButtonNegative" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/black</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="DialogButtonNeutral" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/black</item>
+        <item name="textAllCaps">false</item>
+    </style>
+
 
     <style name="RoundedMaterialDialogShape" parent="">
         <item name="cornerFamily">rounded</item>

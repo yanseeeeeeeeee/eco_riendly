@@ -1,8 +1,10 @@
 package com.example.ecofriendly.view;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 
 import com.example.ecofriendly.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -20,7 +23,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class SignIn extends AppCompatActivity {
+public class SignIn extends BaseActivity {
 
     EditText EDemail, EDpassword;
     Button button;
@@ -29,9 +32,22 @@ public class SignIn extends AppCompatActivity {
     FirebaseAuth mAuth;
 
     @Override
+    protected int getLayoutId() {
+        return R.layout.sign_in;
+    }
+
+    @Override
+    protected int getRootViewId() {
+        return R.id.root;
+    }
+
+    @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sign_in);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
         EDemail = findViewById(R.id.email);
         EDpassword = findViewById(R.id.password);
