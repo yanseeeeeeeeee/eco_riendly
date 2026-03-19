@@ -1,8 +1,8 @@
 package com.example.ecofriendly.view;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -10,8 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.ecofriendly.R;
-import com.example.ecofriendly.data.models.Category;
-import com.example.ecofriendly.data.models.Task;
+import com.example.ecofriendly.data.models.Bage;
 import com.google.common.reflect.TypeToken;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -48,20 +47,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    private String loadJsonFromAssets(String fileName) {
-//        try {
-//            InputStream inputStream = getAssets().open(fileName);
-//            int size = inputStream.available();
-//            byte[] buffer = new byte[size];
-//            inputStream.read(buffer);
-//            inputStream.close();
-//            return new String(buffer, StandardCharsets.UTF_8);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return null;
-//        }
-//    }
-//
+    private String loadJsonFromAssets(String fileName) {
+        try {
+            InputStream inputStream = getAssets().open(fileName);
+            int size = inputStream.available();
+            byte[] buffer = new byte[size];
+            inputStream.read(buffer);
+            inputStream.close();
+            return new String(buffer, StandardCharsets.UTF_8);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 //    private List<Category> parseCategories() {
 //        String json = loadJsonFromAssets("categories.json");
 //
@@ -83,27 +82,45 @@ public class MainActivity extends AppCompatActivity {
 //        Type type = new TypeToken<List<Task>>() {}.getType();
 //        return new Gson().fromJson(json, type);
 //    }
-//
-//    private void uploadAllData() {
+
+    private List<Bage> parseBages() {
+        String json = loadJsonFromAssets("bages.json");
+
+        if (json == null || json.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        Type type = new TypeToken<List<Bage>>() {}.getType();
+        return new Gson().fromJson(json,type);
+    }
+
+    private void uploadAllData() {
 //        List<Category> categoryList = parseCategories();
 //        List<Task> taskList = parseTasks();
-//
+        List<Bage> bagesList = parseBages();
+
 //        if (categoryList.isEmpty()) {
-//            Toast.makeText(this, "Категории пустые", Toast.LENGTH_SHORT).show();
+//            Log.e("MainActivity", "List with categories is empty");
 //            return;
 //        }
 //
 //        if (taskList.isEmpty()) {
-//            Toast.makeText(this, "Задачи пустые", Toast.LENGTH_SHORT).show();
+//            Log.e("MainActivity", "List with tasks is empty");
 //            return;
 //        }
 //
-//        FirebaseFirestore db = FirebaseFirestore.getInstance();
-//        WriteBatch batch = db.batch();
-//
+        if (bagesList.isEmpty()) {
+            Log.e("MainActivity", "List with bages is empty");
+            return;
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        WriteBatch batch = db.batch();
+
 //        CollectionReference categoriesRef = db.collection("categories");
 //        CollectionReference tasksRef = db.collection("task");
-//
+        CollectionReference bagesRef = db.collection("bages");
+
 //        for (Category category : categoryList) {
 //            if (category.getCategoryId() != null && !category.getCategoryId().isEmpty()) {
 //                batch.set(categoriesRef.document(category.getCategoryId()), category);
@@ -115,13 +132,19 @@ public class MainActivity extends AppCompatActivity {
 //                batch.set(tasksRef.document(task.getTaskId()), task);
 //            }
 //        }
-//
-//        batch.commit()
-//                .addOnSuccessListener(unused -> {
-//                    Toast.makeText(this, "Данные успешно загружены", Toast.LENGTH_LONG).show();
-//                })
-//                .addOnFailureListener(e -> {
-//                    Toast.makeText(this, "Ошибка: " + e.getMessage(), Toast.LENGTH_LONG).show();
-//                });
-//    }
+
+        for (Bage bages : bagesList) {
+            if (bages.getUid() != null && !bages.getUid().isEmpty()) {
+                batch.set(bagesRef.document(bages.getUid()), bages);
+            }
+        }
+
+        batch.commit()
+                .addOnSuccessListener(unused -> {
+                    Toast.makeText(this, "Данные успешно загружены", Toast.LENGTH_LONG).show();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(this, "Ошибка: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+    }
 }

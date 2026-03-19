@@ -1,10 +1,13 @@
 package com.example.ecofriendly.data;
 
+import com.example.ecofriendly.data.models.Bage;
 import com.example.ecofriendly.data.models.Task;
 import com.example.ecofriendly.data.models.User;
+import com.example.ecofriendly.data.models.UserBage;
 import com.example.ecofriendly.data.models.UserTask;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.WriteBatch;
 
@@ -97,7 +100,7 @@ public class Repository {
    }
 
     /**
-     * получение листика с задачами
+     * получение листика с активными задачами
      * @param listener
      */
    public void getListTask( taskListGetInfoListener listener ) {
@@ -151,6 +154,13 @@ public class Repository {
                });
    }
 
+    /**
+     * метод для сохранения выполненной задачи
+     * в этом методе так же содержится создание подколлекции user_tasks
+     * @param uid
+     * @param task
+     * @param listener
+     */
    public void completeTask (String uid, Task task, completeTaskListener listener){
 
        DocumentReference userReference = db.collection("users").document(uid);
@@ -215,6 +225,11 @@ public class Repository {
 
    }
 
+    /**
+     * метод для получения листа с задачами, доступными для пользователя к выполнению
+     * @param uid
+     * @param listener
+     */
     public void getAvailableTasks(String uid, taskListGetInfoListener listener) {
         db.collection("users")
                 .document(uid)
@@ -262,6 +277,43 @@ public class Repository {
     }
 
 
+    /**
+     * метод для сохранения значка для пользователя
+     * @param uid
+     * @param bageUid
+     * @param listener
+     */
+    public void setBagesForUser(String uid, Bage bage, completeTaskListener listener ) {
+
+        Map<String, Object> bageMap = new HashMap<>();
+        bageMap.put("bageId", bage.getUid());
+        bageMap.put("receivedAt", FieldValue.serverTimestamp());
+
+        db.collection("users")
+                .document("uid")
+                .collection("user_bages")
+                .document(bage.getUid())
+                .set(bageMap)
+                .addOnSuccessListener(unused -> {
+                    listener.onSuccess();
+                })
+                .addOnFailureListener(e -> listener.onError(e.getMessage()));
+
+    }
+
+//    public void getListBagesUser(String uid, bagesUserListListener listener) {
+//        db.collection("users")
+//                .document(uid)
+//
+//    }
+
+
+
+
+    public interface  bagesUserListListener{
+        void onLoaded(List<UserBage> userBageList);
+        void onError(String error);
+    }
    public interface userNameLoadedListenner{
        void onLoaded(String userString);
        void onError(String error);
@@ -286,6 +338,8 @@ public class Repository {
        void onSuccess();
        void onError(String error);
    }
+
+
 
 
 
