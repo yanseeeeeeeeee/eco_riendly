@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "22341158644",
+    "project_id": "ecofriendly-e82bc",
+    "storage_bucket": "ecofriendly-e82bc.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:22341158644:android:5277b778005c70ed8e40a1",
+        "android_client_info": {
+          "package_name": "com.example.ecofriendly"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7IEuPv1AKghyGOkwLowIjd4CMYGihgIk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

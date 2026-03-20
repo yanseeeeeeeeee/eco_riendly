@@ -1,0 +1,34 @@
+[
+  {
+    "categoryId": "reuse",
+    "title": "Многоразовое использование"
+  },
+  {
+    "categoryId": "waste",
+    "title": "Сортировка отходов"
+  },
+  {
+    "categoryId": "energy",
+    "title": "Экономия энергии"
+  },
+  {
+    "categoryId": "water",
+    "title": "Экономия воды"
+  },
+  {
+    "categoryId": "transport",
+    "title": "Экологичный транспорт"
+  },
+  {
+    "categoryId": "consumption",
+    "title": "Осознанное потребление"
+  },
+  {
+    "categoryId": "nature",
+    "title": "Забота о природе"
+  },
+  {
+    "categoryId": "education",
+    "title": "Эко-образование"
+  }
+]

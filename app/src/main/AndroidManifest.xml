@@ -6,22 +6,54 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/label"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.EcoFriendly">
         <activity
-            android:name=".MainActivity"
+            android:name=".view.SplashActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.EcoFriendly">
+            android:theme="@style/Theme.EcoFriendly.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".view.MainActivity"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".view.SignIn"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".view.SignOn"
+            android:exported="true">
+        </activity>
+
+        <activity android:name=".view.FragmentContainer"
+            android:exported="true">
+        </activity>
+
+        <activity android:name=".view.ChangeProfile"
+            android:exported="true">
+        </activity>
+
+        <activity android:name=".view.Settings"
+            android:exported="true">
+        </activity>
+
+        <activity
+            android:name=".view.CompletedBages"
+            android:exported="true">
+        </activity>
+
     </application>
 
 </manifest>

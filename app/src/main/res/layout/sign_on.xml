@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/root"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ImageButton
+        android:id="@+id/back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/back"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:fontFamily="@font/manrope_font_family"
+        android:textFontWeight="700"
+        android:text="Создание профиля"
+        android:layout_marginStart="40dp"
+        android:textColor="@color/main_green"
+        android:textSize="25sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/back" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="40dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="none"
+            app:boxBackgroundColor="@android:color/transparent"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/email"
+                android:background="@drawable/edit_text_stroke"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/manrope_font_family"
+                android:textFontWeight="500"
+                android:hint="Эл. почта"
+                android:paddingVertical="10dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:paddingTop="0dp"
+                android:textColorHint="@color/hint_text"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="none"
+            app:boxBackgroundColor="@android:color/transparent"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edit_text_stroke"
+                android:fontFamily="@font/manrope_font_family"
+                android:textFontWeight="500"
+                android:hint="Ваше имя"
+                android:paddingVertical="10dp"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:paddingTop="0dp"
+                android:textColorHint="@color/hint_text"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="none"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password"
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:background="@drawable/edit_text_stroke"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/manrope_font_family"
+                android:textFontWeight="500"
+                android:hint="Пароль"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:textColorHint="@color/hint_text"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:hintEnabled="false"
+            app:boxBackgroundMode="none"
+            app:boxBackgroundColor="@android:color/transparent"
+            app:endIconMode="password_toggle">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/password_toggle"
+                android:inputType="textPassword"
+                android:background="@drawable/edit_text_stroke"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/manrope_font_family"
+                android:textFontWeight="500"
+                android:hint="Подтверждение пароля"
+                android:paddingStart="0dp"
+                android:paddingEnd="0dp"
+                android:paddingTop="0dp"
+                android:paddingBottom="0dp"
+                android:textColorHint="@color/hint_text"
+                android:textSize="16sp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="120dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/green_button"
+        android:fontFamily="@font/manrope_font_family"
+        android:textFontWeight="500"
+        android:padding="12dp"
+        android:text="Зарегистрироваться"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:fontFamily="@font/manrope_font_family"
+            android:textFontWeight="400"
+            android:text="У вас уже есть аккаунт?" />
+
+        <TextView
+            android:id="@+id/signIn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Войти"
+            android:textSize="14sp"
+            android:fontFamily="@font/manrope_font_family"
+            android:textFontWeight="400"
+            android:textColor="@color/main_green"
+            android:clickable="true"/>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
