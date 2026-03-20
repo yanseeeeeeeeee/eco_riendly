@@ -277,7 +277,6 @@
                             android:id="@+id/descrStreak"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
                             android:fontFamily="@font/manrope_font_family"
                             android:text=""
                             android:textColor="@color/text"
@@ -288,9 +287,8 @@
                             android:id="@+id/OuStreak"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="2dp"
                             android:fontFamily="@font/manrope_font_family"
-                            android:text="дней подряд!"
+                            android:text=" дней подряд!"
                             android:textColor="@color/text"
                             android:textFontWeight="400"
                             android:textSize="13sp" />
@@ -302,143 +300,99 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
-                        android:gravity="center"
                         android:orientation="horizontal"
                         android:weightSum="7">
 
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <FrameLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_weight="1">
 
                             <ImageView
+                                android:id="@+id/day1"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
-                                android:enabled="false"
+                                android:layout_gravity="center"
                                 android:src="@drawable/day_of_week" />
+                        </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Пн" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <FrameLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_weight="1">
 
                             <ImageView
+                                android:id="@+id/day2"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
+                                android:layout_gravity="center"
                                 android:src="@drawable/day_of_week" />
+                        </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Вт" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <FrameLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_weight="1">
 
                             <ImageView
+                                android:id="@+id/day3"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
+                                android:layout_gravity="center"
                                 android:src="@drawable/day_of_week" />
+                        </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Ср" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <FrameLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_weight="1">
 
                             <ImageView
+                                android:id="@+id/day4"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
+                                android:layout_gravity="center"
                                 android:src="@drawable/day_of_week" />
+                        </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Чт" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <FrameLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_weight="1">
 
                             <ImageView
+                                android:id="@+id/day5"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
+                                android:layout_gravity="center"
                                 android:src="@drawable/day_of_week" />
+                        </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Пт" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <FrameLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_weight="1">
 
                             <ImageView
+                                android:id="@+id/day6"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
+                                android:layout_gravity="center"
                                 android:src="@drawable/day_of_week" />
+                        </FrameLayout>
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Сб" />
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
+                        <FrameLayout
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:orientation="vertical">
+                            android:layout_weight="1">
 
                             <ImageView
+                                android:id="@+id/day7"
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
+                                android:layout_gravity="center"
                                 android:src="@drawable/day_of_week" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Вс" />
-
-                        </LinearLayout>
+                        </FrameLayout>
 
                     </LinearLayout>
 

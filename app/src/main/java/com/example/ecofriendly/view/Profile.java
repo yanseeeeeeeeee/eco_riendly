@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.example.ecofriendly.R;
 import com.example.ecofriendly.data.Repository;
 import com.example.ecofriendly.data.models.User;
+import com.example.ecofriendly.data.models.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,12 +23,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class Profile extends Fragment {
 
     private TextView name, email, changeProfile, points, completedTask, streak, settings;
-
-    private FirebaseFirestore db;
-    private FirebaseAuth mAuth;
-    Repository repository;
-    String uid;
-
+    private UserViewModel userViewModel;
 
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
@@ -67,13 +64,6 @@ public class Profile extends Fragment {
         completedTask = view.findViewById(R.id.completed_task);
         streak = view.findViewById(R.id.streak);
         settings = view.findViewById(R.id.settings);
-        mAuth = FirebaseAuth.getInstance();
-        repository = new Repository();
-        FirebaseUser user = mAuth.getCurrentUser();
-
-
-        uid = "";
-        if (user != null) {uid = user.getUid();}
 
         changeProfile.setOnClickListener(v -> {
             startActivity(new Intent(requireContext(), ChangeProfile.class));
@@ -83,19 +73,15 @@ public class Profile extends Fragment {
             startActivity(new Intent(requireContext(), Settings.class));
         });
 
-        repository.getUser(uid, new Repository.userGetInfoListenner() {
-            @Override
-            public void onLoaded(User user) {
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
+        userViewModel.getUserLiveData().observe(getViewLifecycleOwner(), user -> {
+            if (user != null) {
                 name.setText(user.getName());
                 email.setText(user.getEmail());
                 points.setText(String.valueOf(user.getPoints()));
                 completedTask.setText(String.valueOf(user.getCompletedTasks()));
                 streak.setText(String.valueOf(user.getStreak()));
-            }
-
-            @Override
-            public void onError(String error) {
-                Log.e("Profile", "Ошибка:"+error);
             }
         });
 

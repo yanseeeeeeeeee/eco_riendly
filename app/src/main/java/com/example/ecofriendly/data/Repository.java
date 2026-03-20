@@ -29,27 +29,29 @@ public class Repository {
     /**
      * Метод для получения полной модели пользователя
      * @param uid
-     * @param listenner
+     * @param listener
      */
-   public void getUser(String uid, userGetInfoListenner listenner) {
-       db.collection("users")
-               .document(uid)
-               .get()
-               .addOnSuccessListener(documentSnapshot -> {
+    public void getUser(String uid, userGetInfoListenner listener) {
+        db.collection("users")
+                .document(uid)
+                .addSnapshotListener((documentSnapshot, e) -> {
+                    if (e != null) {
+                        listener.onError("Error: " + e.getMessage());
+                        return;
+                    }
 
-                   if (documentSnapshot.exists()) {
-                       User user = documentSnapshot.toObject(User.class);
-                       if (user != null) {
-                           listenner.onLoaded(user);
-                       } else {
-                           listenner.onError("Пользователь не найден");
-                       }
-                   }
-               })
-               .addOnFailureListener(e -> {
-                   listenner.onError("Error:" + e.getMessage());
-               });
-   }
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        User user = documentSnapshot.toObject(User.class);
+                        if (user != null) {
+                            listener.onLoaded(user);
+                        } else {
+                            listener.onError("Пользователь не найден");
+                        }
+                    } else {
+                        listener.onError("Пользователь не найден");
+                    }
+                });
+    }
 
     /**
      * получение листика с активными задачами
@@ -281,17 +283,26 @@ public class Repository {
         db.collection("users")
                 .document(uid)
                 .collection("user_badges")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (e != null) {
+                        listener.onError(e.getMessage());
+                        return;
+                    }
+
+                    if (queryDocumentSnapshots == null) {
+                        listener.onLoaded(new ArrayList<>());
+                        return;
+                    }
 
                     List<com.google.android.gms.tasks.Task<DocumentSnapshot>> badgeTasks = new ArrayList<>();
 
                     for (DocumentSnapshot documentSnapshot : queryDocumentSnapshots.getDocuments()) {
                         String badgeId = documentSnapshot.getId();
 
-                        com.google.android.gms.tasks.Task<DocumentSnapshot> badgeTask = db.collection("badges")
-                                .document(badgeId)
-                                .get();
+                        com.google.android.gms.tasks.Task<DocumentSnapshot> badgeTask =
+                                db.collection("badges")
+                                        .document(badgeId)
+                                        .get();
 
                         badgeTasks.add(badgeTask);
                     }
@@ -303,7 +314,6 @@ public class Repository {
 
                     Tasks.whenAllSuccess(badgeTasks)
                             .addOnSuccessListener(res -> {
-
                                 List<Badge> badgeList = new ArrayList<>();
 
                                 for (Object o : res) {
@@ -314,16 +324,12 @@ public class Repository {
                                         badge.setBadgeId(badgeDoc.getId());
                                         badgeList.add(badge);
                                     }
-
                                 }
 
                                 listener.onLoaded(badgeList);
-
                             })
-                            .addOnFailureListener(e -> e.getMessage());
-
-                })
-                .addOnFailureListener(e -> listener.onError(e.getMessage()));
+                            .addOnFailureListener(error -> listener.onError(error.getMessage()));
+                });
     }
 
 
@@ -362,25 +368,28 @@ public class Repository {
      * @param uid
      * @param listener
      */
-    public void getTwoLastBages(String uid, bagesTwoLastListener listener ){
+    public void getTwoLastBages(String uid, bagesTwoLastListener listener) {
         db.collection("users")
                 .document(uid)
                 .collection("user_badges")
                 .orderBy("receivedAt", Query.Direction.DESCENDING)
                 .limit(2)
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-
-                    List<DocumentSnapshot> documentSnapshots = queryDocumentSnapshots.getDocuments();
-
-                    if (documentSnapshots.isEmpty()) {
-                        listener.onLoaded(null, null); //если мы получаем нулевые объекты то нам надо прописать в коде чтобы заменить ui
+                .addSnapshotListener((queryDocumentSnapshots, e) -> {
+                    if (e != null) {
+                        listener.onError(e.getMessage());
                         return;
                     }
 
-                    String lastBageId = documentSnapshots.get(0).getId();
+                    if (queryDocumentSnapshots == null || queryDocumentSnapshots.isEmpty()) {
+                        listener.onLoaded(null, null);
+                        return;
+                    }
 
-                    getBadges(lastBageId, new badgesInfoListener() {
+                    List<DocumentSnapshot> documentSnapshots = queryDocumentSnapshots.getDocuments();
+
+                    String lastBadgeId = documentSnapshots.get(0).getId();
+
+                    getBadges(lastBadgeId, new badgesInfoListener() {
                         @Override
                         public void onLoaded(Badge lastBadge) {
                             if (documentSnapshots.size() == 1) {
@@ -392,8 +401,8 @@ public class Repository {
 
                             getBadges(secondLastBadgeId, new badgesInfoListener() {
                                 @Override
-                                public void onLoaded(Badge badge) {
-                                    listener.onLoaded(lastBadge, badge);
+                                public void onLoaded(Badge secondLastBadge) {
+                                    listener.onLoaded(lastBadge, secondLastBadge);
                                 }
 
                                 @Override
@@ -401,19 +410,14 @@ public class Repository {
                                     listener.onError(error);
                                 }
                             });
-
                         }
 
                         @Override
                         public void onError(String error) {
-                            listener.onError("Error" + error);
+                            listener.onError(error);
                         }
                     });
-
-                })
-                .addOnFailureListener(e -> listener.onError(e.getMessage()));
-
-
+                });
     }
 
 

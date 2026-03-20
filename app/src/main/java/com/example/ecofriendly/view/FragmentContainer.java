@@ -2,23 +2,32 @@ package com.example.ecofriendly.view;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.example.ecofriendly.R;
+import com.example.ecofriendly.data.Repository;
+import com.example.ecofriendly.data.models.User;
+import com.example.ecofriendly.data.models.UserViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-/**
- * Класс для работы нижнего навигационного меню, загрузка фрагментов
- */
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class FragmentContainer extends BaseActivity {
-    BottomNavigationView bottomMenu;
+
+    private BottomNavigationView bottomMenu;
+
+    private Fragment homeFragment;
+    private Fragment progressFragment;
+    private Fragment profileFragment;
+    private Fragment activeFragment;
+    private UserViewModel userViewModel;
+    String uid;
+    private Repository repository;
 
     @Override
     protected int getLayoutId() {
@@ -34,43 +43,93 @@ public class FragmentContainer extends BaseActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
 
         bottomMenu = findViewById(R.id.bottomNavigationView);
 
-        //загружаем дефолтный фрагмент в контейнер
-        if (savedInstanceState == null) {
-            LoadFragment(new Home());
+        repository = new Repository();
+
+        userViewModel = new ViewModelProvider(this).get(UserViewModel.class);
+        uid ="";
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            uid = user.getUid();
+            subscribeToUser();
         }
 
-        // обработка нажатий по  меню
+        if (savedInstanceState == null) {
+            homeFragment = new Home();
+            progressFragment = new Progress();
+            profileFragment = new Profile();
+
+            activeFragment = homeFragment;
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .add(R.id.fragment_container, profileFragment, "profile")
+                    .hide(profileFragment)
+                    .add(R.id.fragment_container, progressFragment, "progress")
+                    .hide(progressFragment)
+                    .add(R.id.fragment_container, homeFragment, "home")
+                    .commit();
+        } else {
+            homeFragment = getSupportFragmentManager().findFragmentByTag("home");
+            progressFragment = getSupportFragmentManager().findFragmentByTag("progress");
+            profileFragment = getSupportFragmentManager().findFragmentByTag("profile");
+
+            if (homeFragment != null && !homeFragment.isHidden()) {
+                activeFragment = homeFragment;
+            } else if (progressFragment != null && !progressFragment.isHidden()) {
+                activeFragment = progressFragment;
+            } else {
+                activeFragment = profileFragment;
+            }
+        }
+
         bottomMenu.setOnItemSelectedListener(menuItem -> {
-            Fragment fragment = null;
-            int id = menuItem.getItemId(); // берем элемент менюшки по айдишнику
+            int id = menuItem.getItemId();
 
             if (id == R.id.home) {
-                fragment = new Home();
+                showFragment(homeFragment);
+                return true;
             } else if (id == R.id.notes) {
-                fragment = new Progress();
+                showFragment(progressFragment);
+                return true;
             } else if (id == R.id.profile) {
-                fragment = new Profile();
+                showFragment(profileFragment);
+                return true;
             }
-            LoadFragment(fragment);
-            return true;
+
+            return false;
         });
     }
 
-    /**
-     * Метод для подгрузки экранов
-     * @param fragment
-     */
-    private void LoadFragment(Fragment fragment) {
+    private void showFragment(Fragment fragment) {
+        if (fragment == null || fragment == activeFragment) return;
+
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.fragment_container, fragment)
+                .hide(activeFragment)
+                .show(fragment)
                 .commit();
+
+        activeFragment = fragment;
+    }
+
+    public void subscribeToUser() {
+        repository.getUser(uid, new Repository.userGetInfoListenner() {
+            @Override
+            public void onLoaded(User user) {
+                userViewModel.setUser(user);
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e("FragmentContainer", "Error:" +error);
+            }
+        });
     }
 }

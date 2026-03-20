@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,9 +22,12 @@ import com.example.ecofriendly.data.GameRepository;
 import com.example.ecofriendly.data.Repository;
 import com.example.ecofriendly.data.models.Badge;
 import com.example.ecofriendly.data.models.User;
+import com.example.ecofriendly.data.models.UserViewModel;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.List;
 
 
 public class Progress extends Fragment {
@@ -32,6 +36,9 @@ public class Progress extends Fragment {
             titleSecondLast;
     private LinearLayout badgesContainer;
     private CardView lastCard, lastSecondCard;
+    private ImageView[] days;
+
+    private UserViewModel userViewModel;
 
     private ImageView imageLast, imageSecondLast;
    private FirebaseFirestore db;
@@ -94,73 +101,80 @@ public class Progress extends Fragment {
         titleLast = view.findViewById(R.id.titleLast);
         imageSecondLast = view.findViewById(R.id.imageSecondLast);
         titleSecondLast = view.findViewById(R.id.titleSecondLast);
-
-
-        mAuth = FirebaseAuth.getInstance();
         repository = new Repository();
+
+        userViewModel = new ViewModelProvider(requireActivity()).get(UserViewModel.class);
+
+        days = new ImageView[]{
+                view.findViewById(R.id.day1),
+                view.findViewById(R.id.day2),
+                view.findViewById(R.id.day3),
+                view.findViewById(R.id.day4),
+                view.findViewById(R.id.day5),
+                view.findViewById(R.id.day6),
+                view.findViewById(R.id.day7)
+        };
+
+        userViewModel.getUserLiveData().observe(getViewLifecycleOwner(), user -> {
+            if (user == null) return;
+
+            TVlevel.setText(String.valueOf(user.getLevel()));
+            TVtotalPoints.setText("100");
+
+            int levelProgress = user.getPoints() % 100;
+            if (user.getPoints() > 0 && levelProgress == 0) {
+                levelProgress = 100;
+            }
+
+            progressBar.setMax(100);
+            progressBar.setProgress(levelProgress);
+
+            TVearnedPoints.setText(String.valueOf(levelProgress));
+            TVremainingPoints.setText(String.valueOf(100 - levelProgress));
+
+            if (user.getStreak() == 0) {
+                callStreak.setText("Ваша серия ещё не началась :(");
+                TVstreak.setText("0");
+                ouStreak.setText("");
+            } else {
+                cardBages.setText("Ты выполняешь эко задания уже ");
+                TVstreak.setText(String.valueOf(user.getStreak()));
+                ouStreak.setText(" дней подряд!");
+            }
+
+            descrStreak.setText(String.valueOf(user.getStreak()));
+            cardStreak.setText(String.valueOf(user.getStreak()));
+            cardCompletedTask.setText(String.valueOf(user.getCompletedTasks()));
+            updateStreakUI(user.getStreak());
+        });
+
         gameRepository = new GameRepository();
-
-        FirebaseUser user = mAuth.getCurrentUser();
-        uid = "";
-
-        if (user != null) {
-            uid = user.getUid();
-        }
-
-        loadedInfoWithUser(uid);
 
         all.setOnClickListener(v -> startActivity(new Intent(requireContext(), CompletedBages.class)));
 
-        progressBar.setMax(100);
-        repository.getUser(uid, new Repository.userGetInfoListenner() {
-           @Override
-           public void onLoaded(User user) {
-               progressBar.setProgress(user.getPoints());
-           }
+        mAuth = FirebaseAuth.getInstance();
 
-           @Override
-           public void onError(String error) {
-                Log.e("Progress", "Error:" + error);
-           }
-       });
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        uid = "";
+        if (firebaseUser != null) {
+            uid = firebaseUser.getUid();
+        }
 
         loadedLastBadges();
+        loadBadgesCount();
 
         return view;
     }
 
-    /**
-     * Просто вставляем всю инфу о юзере через сеты
-     * @param uid
-     */
-    public void loadedInfoWithUser(String uid) {
-        repository.getUser(uid, new Repository.userGetInfoListenner() {
-            @Override
-            public void onLoaded(User user) {
-                TVlevel.setText(String.valueOf(user.getLevel()));
-                TVtotalPoints.setText(String.valueOf(100));
-                TVearnedPoints.setText(String.valueOf(user.getPoints()));
-                TVremainingPoints.setText(String.valueOf(gameRepository
-                        .getPointsForNextLevel(user.getPoints())));
 
-                if (user.getStreak() == 0) {
-                    callStreak.setText("Ваша серия ещё не началась :(");
-                    TVstreak.setText("");
-                    ouStreak.setText("");
-                } else { TVstreak.setText(String.valueOf(user.getStreak()));}
-
-                descrStreak.setText(String.valueOf(user.getStreak()));
-                cardStreak.setText(String.valueOf(user.getStreak()));
-                cardCompletedTask.setText(String.valueOf(user.getCompletedTasks()));
-                cardBages.setText(String.valueOf(0));
+    public void updateStreakUI(int streak) {
+        for (int i = 0; i < days.length; i++) {
+            if (i < streak && i < 7) {
+                days[i].setImageResource(R.drawable.day_of_week_active);
+            } else {
+                days[i].setImageResource(R.drawable.day_of_week);
             }
-
-            @Override
-            public void onError(String error) {
-                Log.e("Progress", "Error:" + error);
-            }
-        });
-
+        }
     }
 
     /**
@@ -210,7 +224,7 @@ public class Progress extends Fragment {
                                 .getResources()
                                 .getIdentifier(secondLastBadge.getImageName(), "drawable", getContext().getPackageName());
                         if (resSecondId != 0) {
-                            imageSecondLast.setImageResource(resId);
+                            imageSecondLast.setImageResource(resSecondId);
                         }
                         titleSecondLast.setText(secondLastBadge.getTitle());
                     }
@@ -227,6 +241,20 @@ public class Progress extends Fragment {
 
     }
 
+    private void loadBadgesCount() {
+        if (uid == null || uid.isEmpty()) return;
 
+        repository.getListBagesUser(uid, new Repository.bagesUserListListener() {
+            @Override
+            public void onLoaded(List<Badge> badgeList) {
+                cardBages.setText(String.valueOf(badgeList.size()));
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.e("Progress", "Error loading badges count: " + error);
+            }
+        });
+    }
 
 }

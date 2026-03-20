@@ -88,63 +88,64 @@ public class SignOn extends BaseActivity {
         //пустые поля
         if (Semail.isEmpty() || Sname.isEmpty() || Spassword.isEmpty()||Sforpassword.isEmpty()) {
             Toast.makeText(this, "Не все поля заполнены", Toast.LENGTH_SHORT).show();
-        }
+        } else
 
         //проверка почты
         if (!Patterns.EMAIL_ADDRESS.matcher(Semail).matches()){
             Toast.makeText(this, "Неккоректный email", Toast.LENGTH_SHORT).show();
-        }
+        } else if (Spassword.length()<8) {
+            Toast.makeText(this, "Длина пароля менее 8 символов", Toast.LENGTH_SHORT).show();
+        } else  //проверка совпадения паролей
+            if (!Spassword.equals(Sforpassword)) {
+                Toast.makeText(this, "Пароли не совпадают", Toast.LENGTH_SHORT).show();
+            } else {
 
-        //проверка совпадения паролей
+                //создание пользователя в системе firestore
+                mAuth.createUserWithEmailAndPassword(Semail, Spassword)
+                        .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
 
-        //создание пользователя в системе firestore
-        mAuth.createUserWithEmailAndPassword(Semail, Spassword)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                                    FirebaseUser firebaseUser = mAuth.getCurrentUser();
+                                    String uid = firebaseUser.getUid();
 
-                            FirebaseUser firebaseUser = mAuth.getCurrentUser();
-                            String uid = firebaseUser.getUid();
+                                    User user = new User(uid, Semail, Sname);
 
-                            User user = new User(uid, Semail, Sname);
+                                    if (firebaseUser != null) {
+                                        Log.d("SignOn", "Регистрация успешна"+firebaseUser.getUid());
 
-                            if (firebaseUser != null) {
-                                Log.d("SignOn", "Регистрация успешна"+firebaseUser.getUid());
+                                        db.collection("users")
+                                                .document(uid)
+                                                .set(user)
+                                                .addOnSuccessListener(unused -> {
+                                                    Log.d("SignOn", "Регистрация прошла успешно");
 
-                                db.collection("users")
-                                        .document(uid)
-                                        .set(user)
-                                        .addOnSuccessListener(unused -> {
-                                            Log.d("SignOn", "Регистрация прошла успешно");
+                                                    startActivity(new Intent(SignOn.this, FragmentContainer.class));
+                                                    finish();
+                                                });
 
-                                            startActivity(new Intent(SignOn.this, FragmentContainer.class));
-                                            finish();
-                                        });
+                                    } else {
+                                        Log.e("SignOn", "FirebaseUser==null после успешной регистрации");
 
-                            } else {
-                                Log.e("SignOn", "FirebaseUser==null после успешной регистрации");
+                                        Toast.makeText(SignOn.this,
+                                                "Не удалось зарегестрироваться.",
+                                                Toast.LENGTH_SHORT).show();
 
-                                Toast.makeText(SignOn.this,
-                                        "Не удалось зарегестрироваться.",
-                                        Toast.LENGTH_SHORT).show();
+                                    }
 
+                                } else {
+                                    Exception e = task.getException();
+                                    if (e !=null) {
+                                        Log.e("SignOn", "Ошибка регистрации", e);
+                                    }
+
+                                    Toast.makeText(SignOn.this,
+                                            "Не удалось зарегестрироваться.",
+                                            Toast.LENGTH_SHORT).show();
                                 }
-
-                        } else {
-                            Exception e = task.getException();
-                                if (e !=null) {
-                                    Log.e("SignOn", "Ошибка регистрации", e);
-                                }
-
-                                Toast.makeText(SignOn.this,
-                                        "Не удалось зарегестрироваться.",
-                                        Toast.LENGTH_SHORT).show();
                             }
-                    }
-                });
-    }
-
-
-
+                        });
+            }
+            }
 }
