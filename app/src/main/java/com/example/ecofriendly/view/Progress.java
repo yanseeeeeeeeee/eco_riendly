@@ -137,7 +137,7 @@ public class Progress extends Fragment {
                 TVstreak.setText("0");
                 ouStreak.setText("");
             } else {
-                cardBages.setText("Ты выполняешь эко задания уже ");
+                callStreak.setText("Ты выполняешь эко задания уже ");
                 TVstreak.setText(String.valueOf(user.getStreak()));
                 ouStreak.setText(" дней подряд!");
             }
